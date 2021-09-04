@@ -62,7 +62,7 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                 onPress={() => alert('Profile')}
             >
                 <Image
-                    source={dummyData.myProfile?.profile_image}
+                    source={dummyData?.myProfile?.profile_image}
                     style={styles.styProfileImg}
                 />
                 <View
@@ -70,7 +70,7 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                 >
                     <Text
                         style={styles.styProfileTxt1}
-                    >{dummyData.myProfile?.name} </Text>
+                    >{dummyData?.myProfile?.name} </Text>
                     <Text
                         style={styles.styProfileTxt2}
                     >Xem profile cua ban</Text>
@@ -108,7 +108,7 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                     propIsFocused={propSelectedTab === constants.screens.setting}
                     propOnPress={() => {
                         propSetSelectedTab(constants.screens.setting)
-                        alert('Tuy chinh')
+                        propNavigation.navigate("MainLayout") // --> ERR!!!
                     }}
                 />
             </View>
