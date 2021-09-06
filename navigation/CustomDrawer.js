@@ -12,15 +12,9 @@ const { width } = Dimensions.get('screen')
 const CustomDrawerItem = ({ propLabel, propIcon, propIsFocused, propOnPress }) => {
     return (
         <TouchableOpacity
-            style={{
-                flexDirection: 'row',
-                height: 40,
-                marginBottom: SIZES.base,
-                alignItems: 'center',
-                paddingLeft: SIZES.radius,
-                borderRadius: SIZES.base,
-                backgroundColor: propIsFocused ? COLORS.transparentBlack1 : null,
-            }}
+            style={[styles.styBtn,
+            { backgroundColor: propIsFocused ? COLORS.transparentBlack1 : null, }
+            ]}
             onPress={propOnPress}
         >
             <Image
@@ -90,12 +84,12 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                     }}
                 />
                 <CustomDrawerItem
-                    propLabel={constants.screens.notification}
-                    propIcon={icons.notification}
-                    propIsFocused={propSelectedTab === constants.screens.notification}
+                    propLabel='Gio hang'
+                    propIcon={icons.cart}
+                    propIsFocused={propSelectedTab === constants.screens.cart}
                     propOnPress={() => {
-                        propSetSelectedTab(constants.screens.notification)
-                        alert('Thong bao')
+                        propSetSelectedTab(constants.screens.cart)
+                        propNavigation.navigate("MainLayout")
                     }}
                 />
                 {/* Line */}
@@ -103,12 +97,12 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                     style={styles.styLine}
                 />
                 <CustomDrawerItem
-                    propLabel='Tuy chinh'
-                    propIcon={icons.setting}
-                    propIsFocused={propSelectedTab === constants.screens.setting}
+                    propLabel={'Thong bao'}
+                    propIcon={icons.notification}
+                    propIsFocused={propSelectedTab === constants.screens.notification}
                     propOnPress={() => {
-                        propSetSelectedTab(constants.screens.setting)
-                        propNavigation.navigate("MainLayout") // --> ERR!!!
+                        propSetSelectedTab(constants.screens.notification)
+                        alert('Thong bao')
                     }}
                 />
             </View>
@@ -177,6 +171,14 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(CustomDrawer);
 
 const styles = StyleSheet.create({
+    styBtn: {
+        flexDirection: 'row',
+        height: 40,
+        marginBottom: SIZES.base,
+        alignItems: 'center',
+        paddingLeft: SIZES.radius,
+        borderRadius: SIZES.base,
+    },
     styItemLogout: {
         marginBottom: SIZES.padding,
     },

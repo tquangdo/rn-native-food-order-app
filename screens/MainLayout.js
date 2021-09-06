@@ -1,34 +1,135 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
+    FlatList,
     Image,
     StyleSheet,
     Text,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     View
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { COLORS, constants, dummyData, icons, SIZES } from '../constants';
+import { COLORS, constants, dummyData, FONTS, icons, SIZES } from '../constants';
 import { setSelectedTab } from '../stores/tab/tabActions';
+import CartTab from './Cart/CartTab';
+import Home from './Home/Home';
+import Notification from './Notification/Notification';
 
+const TabButton = ({ propLabel, propIcon, propIsFocused, propOnPress, propOuterContStyle, propInnerContStyle }) => {
+    return (
+        <TouchableWithoutFeedback onPress={propOnPress}>
+            <Animated.View
+                style={[styles.styTabBtn
+                    , propOuterContStyle
+                ]}
+            >
+                <Animated.View
+                    style={[styles.styTabBtnAnimate
+                        , propInnerContStyle
+                    ]}
+                >
+                    <Image
+                        source={propIcon}
+                        style={[
+                            styles.styTabBtnImg
+                            , { tintColor: propIsFocused ? COLORS.white : COLORS.gray, }
+                        ]}
+                    />
+                    {propIsFocused && <Text
+                        numberOfLines={1}
+                        style={[
+                            styles.styTabBtnTxt
+                            , { color: propIsFocused ? COLORS.white : COLORS.gray, }
+                        ]}
+                    >
+                        {propLabel}
+                    </Text>}
+                </Animated.View>
+            </Animated.View>
+        </TouchableWithoutFeedback>
+    )
+}
 const MainLayout = ({ propDrawerAnimationStyle, navigation, sta2PropSelectedTab, dis2PropSetSelectedTab }) => {
+    const flatListRef = useRef()
+    // Reanimated Shared Value
+    const homeTabFlex = useSharedValue(1)
+    const cartTabFlex = useSharedValue(1)
+    const notificationTabFlex = useSharedValue(1)
+    const homeTabColor = useSharedValue(COLORS.white)
+    const cartTabColor = useSharedValue(COLORS.white)
+    const notificationTabColor = useSharedValue(COLORS.white)
+    // Reanimated Animated Style
+    const homeFlexStyle = useAnimatedStyle(() => {
+        return { flex: homeTabFlex.value }
+    })
+    const homeColorStyle = useAnimatedStyle(() => {
+        return { backgroundColor: homeTabColor.value }
+    })
+    const cartFlexStyle = useAnimatedStyle(() => {
+        return { flex: cartTabFlex.value }
+    })
+    const cartColorStyle = useAnimatedStyle(() => {
+        return { backgroundColor: cartTabColor.value }
+    })
+    const notificationFlexStyle = useAnimatedStyle(() => {
+        return { flex: notificationTabFlex.value }
+    })
+    const notificationColorStyle = useAnimatedStyle(() => {
+        return { backgroundColor: notificationTabColor.value }
+    })
     useEffect(() => {
-        dis2PropSetSelectedTab(constants.screens.home)
+        if (sta2PropSelectedTab === constants.screens.home) {
+            flatListRef?.current?.scrollToIndex({
+                index: 0,
+                animated: false,
+            })
+            homeTabFlex.value = withTiming(4, { duration: 300 })
+            homeTabColor.value = withTiming(COLORS.primary, { duration: 300 })
+        } else {
+            homeTabFlex.value = withTiming(1, { duration: 300 })
+            homeTabColor.value = withTiming(COLORS.white, { duration: 300 })
+        }
+        if (sta2PropSelectedTab === constants.screens.cart) {
+            flatListRef?.current?.scrollToIndex({
+                index: 2,
+                animated: false,
+            })
+            cartTabFlex.value = withTiming(4, { duration: 300 })
+            cartTabColor.value = withTiming(COLORS.primary, { duration: 300 })
+        } else {
+            cartTabFlex.value = withTiming(1, { duration: 300 })
+            cartTabColor.value = withTiming(COLORS.white, { duration: 300 })
+        }
+        if (sta2PropSelectedTab === constants.screens.notification) {
+            flatListRef?.current?.scrollToIndex({
+                index: 4,
+                animated: false,
+            })
+            notificationTabFlex.value = withTiming(4, { duration: 300 })
+            notificationTabColor.value = withTiming(COLORS.primary, { duration: 300 })
+        } else {
+            notificationTabFlex.value = withTiming(1, { duration: 300 })
+            notificationTabColor.value = withTiming(COLORS.white, { duration: 300 })
+        }
+    }, [sta2PropSelectedTab])
+    useEffect(() => {
+        dis2PropSetSelectedTab(constants.screens.home) //default init = "home"
     }, [])
+    let var_prop_title = (sta2PropSelectedTab.toUpperCase() === 'CART') ? 'GIO HANG' : (sta2PropSelectedTab.toUpperCase() === 'NOTIFICATION') ? 'THONG BAO' : sta2PropSelectedTab.toUpperCase()
     return (
         <Animated.View
-            style={{
-                flex: 1,
-                backgroundColor: COLORS.white,
-                ...propDrawerAnimationStyle,
-            }}
+            style={[
+                styles.styAnimateView,
+                { ...propDrawerAnimationStyle, }
+            ]}
         >
             {/* Header */}
             <Header
                 propContainerStyle={styles.styHeader}
-                propTitle={sta2PropSelectedTab.toUpperCase()}
+                propTitle={var_prop_title}
                 propLeftComponent={
                     <TouchableOpacity
                         style={styles.styHeaderLeftBtn}
@@ -51,7 +152,27 @@ const MainLayout = ({ propDrawerAnimationStyle, navigation, sta2PropSelectedTab,
             <View
                 style={styles.styContent}
             >
-                <Text>MainLayout</Text>
+                <FlatList
+                    ref={flatListRef}
+                    horizontal
+                    pagingEnabled
+                    snapToAlignment='center'
+                    snapToInterval={SIZES.width}
+                    showsHorizontalScrollIndicator={false}
+                    data={constants.bottom_tabs}
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={({ item }) => {
+                        return (
+                            <View
+                                style={styles.styContentView}
+                            >
+                                {item.label === constants.screens.home && <Home />}
+                                {item.label === constants.screens.cart && <CartTab />}
+                                {item.label === constants.screens.notification && <Notification />}
+                            </View>
+                        )
+                    }}
+                />
             </View>
             {/* Footer */}
             <View
@@ -60,13 +181,42 @@ const MainLayout = ({ propDrawerAnimationStyle, navigation, sta2PropSelectedTab,
                 {/* Shadow */}
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 4 }}
+                    end={{ x: 0, y: 10 }}
                     colors={[
                         COLORS.transparent,
                         COLORS.lightGray1,
                     ]}
                     style={styles.styGradient}
                 />
+                {/* Tabs */}
+                <View
+                    style={styles.styTab}
+                >
+                    <TabButton
+                        propLabel={constants.screens.home}
+                        propIcon={icons.home}
+                        propIsFocused={sta2PropSelectedTab === constants.screens.home}
+                        propOuterContStyle={homeFlexStyle}
+                        propInnerContStyle={homeColorStyle}
+                        propOnPress={() => dis2PropSetSelectedTab(constants.screens.home)}
+                    />
+                    <TabButton
+                        propLabel={'Gio hang'}
+                        propIcon={icons.cart}
+                        propIsFocused={sta2PropSelectedTab === constants.screens.cart}
+                        propOuterContStyle={cartFlexStyle}
+                        propInnerContStyle={cartColorStyle}
+                        propOnPress={() => dis2PropSetSelectedTab(constants.screens.cart)}
+                    />
+                    <TabButton
+                        propLabel={'Thong bao'}
+                        propIcon={icons.notification}
+                        propIsFocused={sta2PropSelectedTab === constants.screens.notification}
+                        propOuterContStyle={notificationFlexStyle}
+                        propInnerContStyle={notificationColorStyle}
+                        propOnPress={() => dis2PropSetSelectedTab(constants.screens.notification)}
+                    />
+                </View>
             </View>
         </Animated.View>
     )
@@ -87,6 +237,44 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(MainLayout);
 
 const styles = StyleSheet.create({
+    styContentView: {
+        height: SIZES.height,
+        width: SIZES.width,
+    },
+    styAnimateView: {
+        flex: 1,
+        backgroundColor: COLORS.white,
+    },
+    styTabBtnTxt: {
+        marginLeft: SIZES.base,
+        ...FONTS.h3,
+    },
+    styTabBtnImg: {
+        width: 20,
+        height: 20,
+    },
+    styTabBtnAnimate: {
+        flexDirection: 'row',
+        width: '80%',
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+    },
+    styTabBtn: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    styTab: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingHorizontal: SIZES.radius,
+        paddingBottom: 10,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: COLORS.white,
+    },
     styGradient: {
         position: 'absolute',
         top: -20,
