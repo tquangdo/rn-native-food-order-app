@@ -9,6 +9,7 @@ const HorizontalFoodCard = ({ propContainerStyle, propImageStyle, propItem, prop
                 styles.styBtn
                 , { ...propContainerStyle, }
             ]}
+            onPress={propOnPress}
         >
             <Image
                 source={propItem.image}

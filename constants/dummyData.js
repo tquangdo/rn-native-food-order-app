@@ -30,7 +30,7 @@ const hamburger = {
     description: "Chicken patty hamburger",
     categories: [1, 2],
     price: 15.99,
-    calories: 78,
+    calories: 70,
     isFavourite: true,
     image: require("../assets/dummyData/hamburger.png")
 }
@@ -40,8 +40,8 @@ const hotTacos = {
     name: "Hot Tacos",
     description: "Mexican tortilla & tacos",
     categories: [1, 3],
-    price: 10.99,
-    calories: 78,
+    price: 65,
+    calories: 65,
     isFavourite: false,
     image: require("../assets/dummyData/hot_tacos.png")
 }
@@ -51,8 +51,8 @@ const vegBiryani = {
     name: "Veg Biryani",
     description: "Indian Vegetable Biryani",
     categories: [1, 2, 3],
-    price: 10.99,
-    calories: 78,
+    price: 49,
+    calories: 49,
     isFavourite: true,
     image: require("../assets/dummyData/veg_biryani.png")
 }
@@ -62,8 +62,8 @@ const wrapSandwich = {
     name: "Wrap Sandwich",
     description: "Grilled vegetables sandwich",
     categories: [1, 2],
-    price: 10.99,
-    calories: 78,
+    price: 33,
+    calories: 33,
     isFavourite: true,
     image: require("../assets/dummyData/wrap_sandwich.png")
 }
@@ -71,44 +71,44 @@ const wrapSandwich = {
 const menu = [
     {
         id: 1,
-        name: "Featured",
+        name: "Dac diem",
         list: [
             hamburger, hotTacos, vegBiryani,
         ]
     },
     {
         id: 2,
-        name: "Nearby you",
+        name: "Gan ban",
         list: [
-            hamburger, vegBiryani, wrapSandwich,
+            hamburger, vegBiryani,
         ]
     },
     {
         id: 3,
-        name: "Popular",
+        name: "Noi tieng",
         list: [
-            hamburger, hotTacos, wrapSandwich,
+            hotTacos, wrapSandwich,
         ]
     },
     {
         id: 4,
-        name: "Newest",
+        name: "Moi nhat",
         list: [
             hamburger, hotTacos, vegBiryani,
         ]
     },
     {
         id: 5,
-        name: "Trending",
+        name: "Xu huong",
         list: [
-            hamburger, vegBiryani, wrapSandwich,
+            hamburger, wrapSandwich,
         ]
     },
     {
         id: 6,
-        name: "Recommended",
+        name: "Gioi thieu",
         list: [
-            hamburger, hotTacos, wrapSandwich,
+            hamburger, hotTacos,
         ]
     },
 
