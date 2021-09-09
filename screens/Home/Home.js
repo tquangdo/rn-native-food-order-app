@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     View,
     Text,
@@ -6,7 +6,10 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    TouchableWithoutFeedback,
+    Modal,
+    Animated
 } from 'react-native';
 import HorizontalFoodCard from '../../components/HorizontalFoodCard';
 import VerticalFoodCard from '../../components/VerticalFoodCard';
@@ -42,9 +45,30 @@ const Home = () => {
     const [staSelCategoryId, setStaSelCategoryId] = useState(1)
     const [staSelMenuType, setStaSelMenuType] = useState(1)
     const [staMenuList, setStaMenuList] = useState([])
+    const [staShowFilterModal, setStaShowFilterModal] = useState(false)
     useEffect(() => {
         _handleChangeCategory(staSelCategoryId, staSelMenuType)
     }, [])
+    const refModalAnimatedVal = useRef(new Animated.Value(0)).current
+    useEffect(() => {
+        if (staShowFilterModal) {
+            Animated.timing(refModalAnimatedVal, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: false,
+            }).start()
+        } else {
+            Animated.timing(refModalAnimatedVal, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: false,
+            }).start(() => setStaShowFilterModal(false))
+        }
+    }, [staShowFilterModal])
+    const modalY = refModalAnimatedVal.interpolate({
+        inputRange: [0, 1],
+        outputRange: [SIZES.height, SIZES.height - 680],
+    })
     function _handleChangeCategory(arg_category_id, arg_menu_type_id) {
         const selPopular = dummyData.menu.find(item => item.name === "Noi tieng")
         const selRecommend = dummyData.menu.find(item => item.name === "Gioi thieu")
@@ -68,8 +92,10 @@ const Home = () => {
                     style={styles.styRenderSearchTxt}
                     placeholder='Tim mon...'
                 />
-                {/* Filter Icon */}
-                <TouchableOpacity>
+                {/* Filter Button */}
+                <TouchableOpacity
+                    onPress={() => setStaShowFilterModal(true)}
+                >
                     <Image
                         source={icons.filter}
                         style={styles.styRenderSearchImg}
@@ -119,7 +145,6 @@ const Home = () => {
                     renderItem={({ item, index }) => (
                         <HorizontalFoodCard
                             propContainerStyle={{
-                                height: 180,
                                 width: SIZES.width * 0.85,
                                 marginLeft: index === 0 ? SIZES.padding : 18,
                                 marginRight: (index === staRecommend.length - 1) ? SIZES.padding : 0,
@@ -168,12 +193,141 @@ const Home = () => {
             />
         )
     }
+    function _renderFoodCategories() {
+        return (
+            <FlatList
+                data={dummyData.categories}
+                keyExtractor={item => `${item.id}`}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                    return (
+                        <TouchableOpacity
+                            style={{
+                                flexDirection: 'row',
+                                height: 55,
+                                marginTop: SIZES.padding,
+                                marginLeft: index === 0 ? SIZES.padding : SIZES.radius,
+                                marginRight: (index === dummyData.categories.length - 1) ? SIZES.padding : 0,
+                                paddingHorizontal: 8,
+                                borderRadius: SIZES.radius,
+                                backgroundColor: staSelCategoryId === item.id ? COLORS.primary : COLORS.lightGray2
+                            }}
+                            onPress={() => {
+                                setStaSelCategoryId(item.id)
+                                _handleChangeCategory(item.id, staSelMenuType)
+                            }}
+                        >
+                            <Image
+                                source={item.icon}
+                                style={{
+                                    marginTop: 5,
+                                    height: 50,
+                                    width: 50,
+                                }}
+                            />
+                            <Text
+                                style={{
+                                    alignSelf: 'center',
+                                    marginRight: SIZES.base,
+                                    color: staSelCategoryId === item.id ? COLORS.white : COLORS.darkGray,
+                                    ...FONTS.h3,
+                                }}
+                            >{item.name}</Text>
+                        </TouchableOpacity>
+                    )
+                }}
+            />
+        )
+    }
+    function _renderDeliveryTo() {
+        return (
+            <View
+                style={{
+                    marginTop: SIZES.padding,
+                    marginHorizontal: SIZES.padding,
+                }}
+            >
+                <Text
+                    style={{
+                        color: COLORS.primary,
+                        ...FONTS.body3,
+                    }}
+                >
+                    Chuyen toi:
+                </Text>
+                <TouchableOpacity
+                    style={{
+                        flexDirection: 'row',
+                        marginTop: SIZES.base,
+                        alignItems: 'center',
+                    }}
+                    onPress={() => alert(dummyData?.myProfile?.address)}
+                >
+                    <Text
+                        style={{ ...FONTS.h3 }}
+                    >
+                        {dummyData?.myProfile?.address}
+                    </Text>
+                    <Image
+                        source={icons.down_arrow}
+                        style={{
+                            marginLeft: SIZES.base,
+                            height: 20,
+                            width: 20,
+                        }}
+                    />
+                </TouchableOpacity>
+            </View>
+        )
+    }
     return (
         <View
             style={styles.styView}
         >
             {/* Search */}
             {_renderSearch()}
+            {/* Modal */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={staShowFilterModal}
+            >
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: COLORS.transparentBlack7,
+                    }}
+                >
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            setStaShowFilterModal(false)
+                        }
+                        }
+                    >
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 0, left: 0, right: 0, bottom: 0,
+                            }}
+                        />
+                    </TouchableWithoutFeedback>
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
+                            top: modalY, left: 0,
+                            width: '100%',
+                            height: '100%',
+                            padding: SIZES.padding,
+                            borderTopRightRadius: SIZES.padding,
+                            borderTopLeftRadius: SIZES.padding,
+                            backgroundColor: COLORS.white,
+                        }}
+                    >
+
+                    </Animated.View>
+                </View>
+            </Modal>
             {/* List */}
             <FlatList
                 data={staMenuList}
@@ -181,6 +335,8 @@ const Home = () => {
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={
                     <View>
+                        {_renderDeliveryTo()}
+                        {_renderFoodCategories()}
                         {_renderPopularSection()}
                         {_renderRecommendedSection()}
                         {_renderMenuTypes()}
@@ -196,6 +352,11 @@ const Home = () => {
                         />
                     )
                 }}
+                ListFooterComponent={
+                    <View
+                        style={{ height: 200 }}
+                    />
+                }
             />
         </View>
     )
@@ -236,7 +397,6 @@ const styles = StyleSheet.create({
         width: 150,
     },
     styHFCContainer: {
-        height: 130,
         alignItems: 'center',
         marginHorizontal: SIZES.padding,
         marginBottom: SIZES.radius,

@@ -9,17 +9,17 @@ const myProfile = {
 const categories = [
     {
         id: 1,
-        name: "Fast Food",
+        name: "All",
         icon: icons.burger
     },
     {
         id: 2,
-        name: "Fruit Item",
+        name: "Rau",
         icon: icons.cherry
     },
     {
         id: 3,
-        name: "Rice Item",
+        name: "Gao",
         icon: icons.rice
     }
 ]
