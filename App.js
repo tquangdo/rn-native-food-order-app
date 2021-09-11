@@ -6,6 +6,14 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import rootReducer from './stores/rootReducer'
+import {
+    OnBoarding,
+    SignIn,
+    SignUp,
+    ForgotPassword,
+    Otp
+} from './screens'
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createStackNavigator();
 const cst_store = createStore(
@@ -13,6 +21,9 @@ const cst_store = createStore(
     applyMiddleware(thunk)
 )
 const App = () => {
+    React.useEffect(() => {
+        SplashScreen.hide();
+    }, [])
     return (
         <Provider store={cst_store}>
             <NavigationContainer>
@@ -20,11 +31,36 @@ const App = () => {
                     screenOptions={{
                         headerShown: false
                     }}
-                    initialRouteName={'Home'}
+                    // initialRouteName={'Home'}
+                    initialRouteName={'OnBoarding'}
                 >
                     <Stack.Screen
                         name="Home"
                         component={CustomDrawer}
+                    />
+                    <Stack.Screen
+                        name="OnBoarding"
+                        component={OnBoarding}
+                    />
+
+                    <Stack.Screen
+                        name="SignIn"
+                        component={SignIn}
+                    />
+
+                    <Stack.Screen
+                        name="SignUp"
+                        component={SignUp}
+                    />
+
+                    <Stack.Screen
+                        name="ForgotPassword"
+                        component={ForgotPassword}
+                    />
+
+                    <Stack.Screen
+                        name="Otp"
+                        component={Otp}
                     />
                 </Stack.Navigator>
             </NavigationContainer>
