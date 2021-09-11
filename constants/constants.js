@@ -33,15 +33,15 @@ const bottom_tabs = [
 const delivery_time = [
     {
         id: 1,
-        label: "10 Mins",
+        label: "10 phut",
     },
     {
         id: 2,
-        label: "20 Mins"
+        label: "20 phut"
     },
     {
         id: 3,
-        label: "30 Mins"
+        label: "30 phut"
     }
 ]
 

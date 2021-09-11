@@ -9,11 +9,14 @@ import {
     FlatList,
     TouchableWithoutFeedback,
     Modal,
-    Animated
+    Animated,
+    ScrollView
 } from 'react-native';
+import CompTextButton from '../../components/CompTextButton';
+import CompTwoPointSlider from '../../components/CompTwoPointSlider';
 import HorizontalFoodCard from '../../components/HorizontalFoodCard';
 import VerticalFoodCard from '../../components/VerticalFoodCard';
-import { COLORS, dummyData, FONTS, icons, SIZES } from '../../constants';
+import { COLORS, constants, dummyData, FONTS, icons, SIZES } from '../../constants';
 import { setSelectedTabSuccess } from '../../stores/tab/tabActions';
 
 const CompSection = ({ propTitle, propOnPress, children }) => {
@@ -39,6 +42,24 @@ const CompSection = ({ propTitle, propOnPress, children }) => {
         </View>
     )
 }
+const CompSectionFilter = ({ propTitle, propContainerStyle, children }) => {
+    return (
+        <View
+            style={{
+                marginTop: SIZES.padding,
+                ...propContainerStyle,
+            }}
+        >
+            <Text
+                style={{ ...FONTS.h3 }}
+            >
+                {propTitle}
+            </Text>
+            {/* Content */}
+            {children}
+        </View>
+    )
+}
 const Home = () => {
     const [staPopular, setStaPopular] = useState([])
     const [staRecommend, setStaRecommend] = useState([])
@@ -46,6 +67,11 @@ const Home = () => {
     const [staSelMenuType, setStaSelMenuType] = useState(1)
     const [staMenuList, setStaMenuList] = useState([])
     const [staShowFilterModal, setStaShowFilterModal] = useState(false)
+    const [staDeliveryTime, setStaDeliveryTime] = useState(1)
+    const [staRatings, setStaRatings] = useState(1)
+    const [staTags, setStaTags] = useState(1)
+    const [sta2PSliderDist, setSta2PSliderDist] = useState([5, 15])
+    const [sta2PSliderPrice, setSta2PSliderPrice] = useState([5, 20])
     useEffect(() => {
         _handleChangeCategory(staSelCategoryId, staSelMenuType)
     }, [])
@@ -281,6 +307,169 @@ const Home = () => {
             </View>
         )
     }
+    function _renderDistance() {
+        return (
+            <CompSectionFilter
+                propTitle='Khoang cach'>
+                <View
+                    style={{ alignItems: 'center' }}
+                >
+                    <CompTwoPointSlider
+                        propValues={sta2PSliderDist}
+                        propMin={1}
+                        propMax={20}
+                        propPrefix=''
+                        propPostfix='km'
+                        propOnValuesChange={item_val => setSta2PSliderDist(item_val)}
+                    />
+                </View>
+            </CompSectionFilter>
+        )
+    }
+    function _renderDeliveryTime() {
+        return (
+            <CompSectionFilter
+                propTitle='Thoi gian hang toi'
+                propContainerStyle={{ marginTop: 40, }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        marginTop: SIZES.radius,
+                    }}
+                >
+                    {constants.delivery_time.map((item, index) => {
+                        return (
+                            <CompTextButton
+                                key={`${index}`}
+                                propLabel={item.label}
+                                propLabelStyle={{
+                                    color: item.id === staDeliveryTime ? COLORS.white : COLORS.gray,
+                                }}
+                                propButtonContainerStyle={{
+                                    width: '30%',
+                                    height: 50,
+                                    margin: 5,
+                                    borderRadius: SIZES.base,
+                                    backgroundColor: item.id === staDeliveryTime ? COLORS.primary : COLORS.lightGray2
+                                }}
+                                propOnPress={() => setStaDeliveryTime(item.id)}
+                            />
+                        )
+                    })}
+                </View>
+            </CompSectionFilter>
+        )
+    }
+    function _renderPricingRange() {
+        return (
+            <CompSectionFilter
+                propTitle='Gia tien'>
+                <View
+                    style={{ alignItems: 'center' }}
+                >
+                    <CompTwoPointSlider
+                        propValues={sta2PSliderPrice}
+                        propMin={1}
+                        propMax={100}
+                        propPrefix='$'
+                        propPostfix=''
+                        propOnValuesChange={item_val => setSta2PSliderPrice(item_val)}
+                    />
+                </View>
+            </CompSectionFilter>
+        )
+    }
+    function _renderRatings() {
+        return (
+            <CompSectionFilter
+                propTitle='Danh gia'
+                propContainerStyle={{ marginTop: 40, }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: SIZES.radius,
+                    }}
+                >
+                    {constants.ratings.map((item, index) => {
+                        return (
+                            <TouchableOpacity
+                                key={`${index}`}
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    flex: 1,
+                                    height: 50,
+                                    margin: 5,
+                                    alignItems: 'center',
+                                    borderRadius: SIZES.base,
+                                    backgroundColor: item.id === staRatings ? COLORS.primary : COLORS.lightGray2
+                                }}
+                                onPress={() => setStaRatings(item.id)}
+                            >
+                                <Text
+                                    style={{
+                                        ...FONTS.body3,
+                                        color: item.id === staRatings ? COLORS.white : COLORS.gray,
+                                    }}
+                                >
+                                    {item.label}
+                                </Text>
+                                <Image
+                                    source={icons.star}
+                                    style={{
+                                        marginLeft: 5,
+                                        width: 20,
+                                        height: 20,
+                                        tintColor: item.id === staRatings ? COLORS.white : COLORS.gray,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>
+            </CompSectionFilter>
+        )
+    }
+    function _renderTags() {
+        return (
+            <CompSectionFilter
+                propTitle='Gan kem'
+            // propContainerStyle={{ marginTop: 40, }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        marginTop: SIZES.radius,
+                    }}
+                >
+                    {constants.tags.map((item, index) => {
+                        return (
+                            <CompTextButton
+                                key={`${index}`}
+                                propLabel={item.label}
+                                propLabelStyle={{
+                                    color: item.id === staTags ? COLORS.white : COLORS.gray,
+                                }}
+                                propButtonContainerStyle={{
+                                    width: '30%',
+                                    height: 50,
+                                    margin: 5,
+                                    borderRadius: SIZES.base,
+                                    backgroundColor: item.id === staTags ? COLORS.primary : COLORS.lightGray2
+                                }}
+                                propOnPress={() => setStaTags(item.id)}
+                            />
+                        )
+                    })}
+                </View>
+            </CompSectionFilter>
+        )
+    }
     return (
         <View
             style={styles.styView}
@@ -324,7 +513,72 @@ const Home = () => {
                             backgroundColor: COLORS.white,
                         }}
                     >
-
+                        {/* Header */}
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{ flex: 1, ...FONTS.h3, fontSize: 18, }}
+                            >Loc DK search</Text>
+                            <TouchableOpacity
+                                style={{
+                                    borderWidth: 2,
+                                    borderRadius: 10,
+                                    borderColor: COLORS.gray2,
+                                }}
+                                onPress={() => setStaShowFilterModal(false)}
+                            >
+                                <Image
+                                    source={icons.cross}
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        tintColor: COLORS.gray2
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={{ paddingBottom: 250, }}
+                        >
+                            {/* distance */}
+                            {_renderDistance()}
+                            {/* delivery time */}
+                            {_renderDeliveryTime()}
+                            {/* price */}
+                            {_renderPricingRange()}
+                            {/* rating */}
+                            {_renderRatings()}
+                            {/* tag */}
+                            {_renderTags()}
+                            {/* submit */}
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 150,
+                                    left: 0,
+                                    right: 0,
+                                    height: 110,
+                                    paddingHorizontal: SIZES.padding,
+                                    paddingVertical: SIZES.radius,
+                                    backgroundColor: COLORS.white,
+                                }}
+                            >
+                                <CompTextButton
+                                    propLabel='Ap dung loc'
+                                    propButtonContainerStyle={{
+                                        height: 50,
+                                        borderRadius: SIZES.base,
+                                        backgroundColor: COLORS.primary
+                                    }}
+                                    propOnPress={() => alert('Ap dung loc')}
+                                />
+                            </View>
+                        </ScrollView>
                     </Animated.View>
                 </View>
             </Modal>

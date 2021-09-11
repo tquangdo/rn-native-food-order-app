@@ -112,6 +112,9 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                 <CustomDrawerItem
                     propLabel='Dang xuat'
                     propIcon={icons.logout}
+                    propOnPress={() => {
+                        alert('Dang xuat')
+                    }}
                 />
             </View>
         </DrawerContentScrollView>
