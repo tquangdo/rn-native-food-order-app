@@ -26,8 +26,8 @@ const categories = [
 
 const hamburger = {
     id: 1,
-    name: "Hamburger",
-    description: "Chicken patty hamburger",
+    name: "Ham bo go",
+    description: "Bánh hamburger gà",
     categories: [1, 2],
     price: 15.99,
     calories: 70,
@@ -37,8 +37,8 @@ const hamburger = {
 
 const hotTacos = {
     id: 2,
-    name: "Hot Tacos",
-    description: "Mexican tortilla & tacos",
+    name: "Tacos nóng",
+    description: "Bánh tortilla Mexico",
     categories: [1, 3],
     price: 65,
     calories: 65,
@@ -49,7 +49,7 @@ const hotTacos = {
 const vegBiryani = {
     id: 3,
     name: "Veg Biryani",
-    description: "Indian Vegetable Biryani",
+    description: "Biryani rau Ấn Độ",
     categories: [1, 2, 3],
     price: 49,
     calories: 49,
@@ -59,8 +59,8 @@ const vegBiryani = {
 
 const wrapSandwich = {
     id: 4,
-    name: "Wrap Sandwich",
-    description: "Grilled vegetables sandwich",
+    name: "bọc bánh mì sandwich",
+    description: "Bánh mì kẹp rau củ nướng",
     categories: [1, 2],
     price: 33,
     calories: 33,

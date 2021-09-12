@@ -1,3 +1,26 @@
+const onboarding_screens = [
+    {
+        id: 1,
+        backgroundImage: require("../assets/images/background_01.png"),
+        bannerImage: require("../assets/images/favourite_food.png"),
+        title: "Chọn một món ăn yêu thích",
+        description: "Khi bạn gọi món Eat Steet, chúng tôi sẽ thu hút bạn bằng phiếu giảm giá, đặc biệt và phần thưởng độc quyền"
+    },
+    {
+        id: 2,
+        backgroundImage: require("../assets/images/background_02.png"),
+        bannerImage: require("../assets/images/hot_delivery.png"),
+        title: "Giao hàng nóng tận nhà",
+        description: "Chúng tôi thực hiện đặt hàng thực phẩm dễ dàng, đơn giản và miễn phí - bất kể bạn đặt hàng trực tuyến hay bằng tiền mặt"
+    },
+    {
+        id: 3,
+        backgroundImage: require("../assets/images/background_01.png"),
+        bannerImage: require("../assets/images/great_food.png"),
+        title: "Nhận thức ăn tuyệt vời",
+        description: "Bạn sẽ nhận được món ăn tuyệt vời trong vòng một giờ. Và nhận được tín dụng giao hàng miễn phí cho mọi đơn đặt hàng."
+    }
+]
 const screens = {
     main_layout: "MainLayout",
     home: "Home",
@@ -104,6 +127,7 @@ const tags = [
 ]
 
 export default {
+    onboarding_screens,
     screens,
     bottom_tabs,
     delivery_time,

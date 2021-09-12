@@ -8,6 +8,7 @@ const CompTextButton = ({ propLabel, propLabelStyle, propButtonContainerStyle, p
             style={{
                 alignItems: 'center',
                 justifyContent: 'center',
+                backgroundColor: COLORS.primary,
                 ...propButtonContainerStyle,
             }}
             onPress={propOnPress}
