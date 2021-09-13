@@ -27,7 +27,7 @@ const CustomDrawerItem = ({ propLabel, propIcon, propIsFocused, propOnPress }) =
         </TouchableOpacity>
     )
 }
-const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedTab }) => {
+const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedTab, propRouteParam = dummyData?.myProfile?.name }) => {
     return (
         <DrawerContentScrollView
             scrollEnabled={true}
@@ -64,7 +64,9 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                 >
                     <Text
                         style={styles.styProfileTxt1}
-                    >{dummyData?.myProfile?.name} </Text>
+                    >
+                        {propRouteParam}
+                    </Text>
                     <Text
                         style={styles.styProfileTxt2}
                     >Xem profile cua ban</Text>
@@ -113,14 +115,16 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                     propLabel='Dang xuat'
                     propIcon={icons.logout}
                     propOnPress={() => {
-                        alert('Dang xuat')
+                        propNavigation.navigate("SignIn", {
+                            nav_email: 'SignIn',
+                        })
                     }}
                 />
             </View>
         </DrawerContentScrollView>
     )
 }
-const CustomDrawer = ({ sta2PropSelectedTab, dis2PropSetSelectedTab }) => {
+const CustomDrawer = ({ sta2PropSelectedTab, dis2PropSetSelectedTab, route }) => {
     const [staProgress, setStaProgress] = useState(new Animated.Value(0.5))
     const scale = Animated.interpolateNode(staProgress, {
         inputRange: [0, 1],
@@ -144,6 +148,7 @@ const CustomDrawer = ({ sta2PropSelectedTab, dis2PropSetSelectedTab }) => {
                         setStaProgress(arg_props.progress) // varname phai la "progress" vi no la KW trong "drawerContent"
                     }, 0)
                     return <CustomDrawerContent
+                        propRouteParam={route?.params?.nav_email}
                         propNavigation={arg_props.navigation}
                         propSelectedTab={sta2PropSelectedTab}
                         propSetSelectedTab={dis2PropSetSelectedTab}

@@ -2,9 +2,10 @@ import React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { COLORS, FONTS } from '../constants'
 
-const CompTextButton = ({ propLabel, propLabelStyle, propButtonContainerStyle, propOnPress }) => {
+const CompTextButton = ({ propLabel, propDisabled = false, propLabelStyle, propButtonContainerStyle, propOnPress }) => {
     return (
         <TouchableOpacity
+            disabled={propDisabled}
             style={{
                 alignItems: 'center',
                 justifyContent: 'center',

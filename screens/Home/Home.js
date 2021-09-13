@@ -17,7 +17,7 @@ import CompTwoPointSlider from '../../components/CompTwoPointSlider';
 import HorizontalFoodCard from '../../components/HorizontalFoodCard';
 import VerticalFoodCard from '../../components/VerticalFoodCard';
 import { COLORS, constants, dummyData, FONTS, icons, SIZES } from '../../constants';
-import { setSelectedTabSuccess } from '../../stores/tab/tabActions';
+// import { setSelectedTabSuccess } from '../../stores/tab/tabActions';
 
 const CompSection = ({ propTitle, propOnPress, children }) => {
     return (
