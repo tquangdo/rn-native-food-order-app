@@ -15,11 +15,12 @@ import AuthLayout from './AuthLayout';
 const SignIn = ({ navigation }) => {
     const [staEmail, setStaEmail] = useState('')
     const [staPassword, setStaPassword] = useState('')
-    const [staEmailError, setStaEmailError] = useState('')
+    const [staEmailError, setStaEmailError] = useState('Email ko hop le!!!')
+    const [staPasswordError, setStaPasswordError] = useState('Password phai > 5 ki tu!!!')
     const [staShowPass, setStaShowPass] = useState(false)
     const [staSaveMe, setStaSaveMe] = useState(false)
     function _isEnableSignIn() {
-        return staEmail !== '' && staPassword !== '' && staEmailError === ''
+        return staEmailError === '' && staPasswordError === ''
     }
     return (
         <AuthLayout
@@ -45,11 +46,11 @@ const SignIn = ({ navigation }) => {
                             style={{ justifyContent: 'center', }}
                         >
                             <Image
-                                source={staEmail === '' || (staEmail !== '' && staEmailError === '') ? icons.correct : icons.cross}
+                                source={(staEmail !== '' && staEmailError === '') ? icons.correct : icons.cross}
                                 style={{
                                     height: 20,
                                     width: 20,
-                                    tintColor: staEmail === '' || (staEmail !== '' && staEmailError === '') ? COLORS.green : COLORS.red,
+                                    tintColor: (staEmail !== '' && staEmailError === '') ? COLORS.green : COLORS.red,
                                 }}
                             />
                         </View>
@@ -60,8 +61,10 @@ const SignIn = ({ navigation }) => {
                     pSecureTextEntry={!staShowPass}
                     pContainerStyle={{ marginTop: SIZES.radius, }}
                     pOnChange={item_value => {
+                        utils.validatePassword(item_value, setStaPasswordError)
                         setStaPassword(item_value)
                     }}
+                    pErrorMsg={staPasswordError}
                     pAppendComponent={
                         <TouchableOpacity
                             style={{
@@ -101,7 +104,9 @@ const SignIn = ({ navigation }) => {
                             color: COLORS.gray,
                             ...FONTS.body4,
                         }}
-                        propOnPress={() => navigation.navigate('ForgotPassword')}
+                        propOnPress={() => navigation.navigate('ForgotPassword', {
+                            nav_email: staEmail,
+                        })}
                     />
                 </View>
                 {/* sign in */}
@@ -149,6 +154,7 @@ const SignIn = ({ navigation }) => {
                     />
                 </View>
             </View>
+            {/* footer */}
             <View>
                 {/* fb */}
                 <TouchableOpacity

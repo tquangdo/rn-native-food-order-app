@@ -115,9 +115,7 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                     propLabel='Dang xuat'
                     propIcon={icons.logout}
                     propOnPress={() => {
-                        propNavigation.navigate("SignIn", {
-                            nav_email: 'SignIn',
-                        })
+                        propNavigation.navigate("SignIn")
                     }}
                 />
             </View>
@@ -135,6 +133,7 @@ const CustomDrawer = ({ sta2PropSelectedTab, dis2PropSetSelectedTab, route }) =>
         outputRange: [0, 26],
     })
     const animated_style = { borderRadius, transform: [{ scale }] } // varname phai la "borderRadius/scale" vi no la key trong JSON
+    const { nav_email } = route?.params
     return (
         <View style={styles.styView} >
             <Drawer.Navigator
@@ -148,7 +147,7 @@ const CustomDrawer = ({ sta2PropSelectedTab, dis2PropSetSelectedTab, route }) =>
                         setStaProgress(arg_props.progress) // varname phai la "progress" vi no la KW trong "drawerContent"
                     }, 0)
                     return <CustomDrawerContent
-                        propRouteParam={route?.params?.nav_email}
+                        propRouteParam={nav_email}
                         propNavigation={arg_props.navigation}
                         propSelectedTab={sta2PropSelectedTab}
                         propSetSelectedTab={dis2PropSetSelectedTab}

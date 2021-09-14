@@ -157,6 +157,14 @@ const MainLayout = ({ propDrawerAnimationStyle, navigation, sta2PropSelectedTab,
                     horizontal
                     pagingEnabled
                     snapToAlignment='center'
+                    // phai co cai nay thi navigate: SignIn => Home > move Home->Cart > Dang xuat => SignIn => quay lai "Home" chu ko phai "Cart"!
+                    initialScrollIndex={0}
+                    onScrollToIndexFailed={() => {
+                        const wait = new Promise(resolve => setTimeout(resolve, 500));
+                        wait.then(() => {
+                            flatListRef.current?.scrollToIndex({ index: 0, animated: true });
+                        });
+                    }}
                     snapToInterval={SIZES.width}
                     showsHorizontalScrollIndicator={false}
                     data={constants.bottom_tabs}

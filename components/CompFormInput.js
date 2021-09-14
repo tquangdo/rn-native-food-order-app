@@ -13,6 +13,7 @@ const CompFormInput = ({
     pSecureTextEntry,
     pAutoCompleteType = 'off',
     pAutoCapitalize = 'none',
+    pAutoCorrect = false,
     pErrorMsg = '',
 }) => {
     return (
@@ -56,6 +57,7 @@ const CompFormInput = ({
                     secureTextEntry={pSecureTextEntry}
                     autoCompleteType={pAutoCompleteType}
                     autoCapitalize={pAutoCapitalize}
+                    autoCorrect={pAutoCorrect}
                     onChangeText={item_text => pOnChange(item_text)}
                 />
                 {pAppendComponent}

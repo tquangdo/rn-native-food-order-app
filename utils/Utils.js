@@ -4,29 +4,38 @@ function isValidEmail(value) {
 }
 
 function validateEmail(value, setEmailError) {
-    if (value == "") {
-        setEmailError("")
+    if (value === 'a@b.co') {
+        setEmailError("Email da ton tai!!!")
     }
     else if (isValidEmail(value)) {
         setEmailError("")
     }
     else {
-        setEmailError("Invalid Email")
+        setEmailError("Email ko hop le!!!")
     }
 }
 
 function validatePassword(value, setPasswordError) {
-    if (value.length < 9) {
-        setPasswordError("Password must be 9 characters")
+    if (value.length < 6) {
+        setPasswordError("Password phai > 5 ki tu!!!")
     } else {
         setPasswordError("")
+    }
+}
+
+function validateUsername(value, setUsernameError) {
+    if (value.length < 2) {
+        setUsernameError("Username phai > 1 ki tu!!!")
+    } else {
+        setUsernameError("")
     }
 }
 
 const utils = {
     isValidEmail,
     validateEmail,
-    validatePassword
+    validatePassword,
+    validateUsername
 };
 
 export default utils;

@@ -136,7 +136,7 @@ const Home = () => {
                 propTitle='Noi tieng'
                 propOnPress={() => alert('Noi tieng')}
             >
-                <FlatList
+                {(staPopular.length > 0) ? <FlatList
                     data={staPopular}
                     keyExtractor={item => `${item.id}`}
                     horizontal
@@ -152,7 +152,11 @@ const Home = () => {
                         />
 
                     )}
-                />
+                /> : <View
+                    style={{ alignItems: 'center', }}
+                >
+                    <Text>Hien chua co mon an nao!</Text>
+                </View>}
             </CompSection>
         )
     }
@@ -162,7 +166,7 @@ const Home = () => {
                 propTitle='Gioi thieu'
                 propOnPress={() => alert('Gioi thieu')}
             >
-                <FlatList
+                {(staPopular.length > 0) ? <FlatList
                     data={staRecommend}
                     horizontal
                     keyExtractor={item => `${item.id}`}
@@ -183,7 +187,11 @@ const Home = () => {
                         />
 
                     )}
-                />
+                /> : <View
+                    style={{ alignItems: 'center', }}
+                >
+                    <Text>Hien chua co mon an nao!</Text>
+                </View>}
             </CompSection>
         )
     }
