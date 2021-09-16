@@ -16,9 +16,9 @@ const SignUp = ({ navigation }) => {
     const [staUsername, setStaUsername] = useState('')
     const [staPassword, setStaPassword] = useState('')
     const [staShowPass, setStaShowPass] = useState(false)
-    const [staEmailError, setStaEmailError] = useState('Email ko hop le!!!')
-    const [staUsernameError, setStaUsernameError] = useState('Username phai > 1 ki tu!!!')
-    const [staPasswordError, setStaPasswordError] = useState('Password phai > 5 ki tu!!!')
+    const [staEmailError, setStaEmailError] = useState('email ko hop le!!!')
+    const [staUsernameError, setStaUsernameError] = useState('username phai > 1 ki tu!!!')
+    const [staPasswordError, setStaPasswordError] = useState('password phai > 5 ki tu!!!')
     function _isEnableSignUp() {
         return staEmailError === '' && staUsernameError === '' && staPasswordError === ''
     }

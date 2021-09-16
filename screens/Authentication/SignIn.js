@@ -5,20 +5,48 @@ import {
     Text,
     TouchableOpacity, View
 } from 'react-native';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import firebase from '@react-native-firebase/app';
+// import auth from '@react-native-firebase/auth';
 import CompCustomSwitch from '../../components/CompCustomSwitch';
 import CompFormInput from '../../components/CompFormInput';
 import CompTextButton from '../../components/CompTextButton';
 import { COLORS, FONTS, icons, SIZES } from '../../constants';
 import utils from '../../utils/Utils';
 import AuthLayout from './AuthLayout';
+import FB_CONFIG from './fbaseConfig'
 
+if (!firebase.apps.length) {
+    firebase.initializeApp(FB_CONFIG)
+}
 const SignIn = ({ navigation }) => {
     const [staEmail, setStaEmail] = useState('')
     const [staPassword, setStaPassword] = useState('')
-    const [staEmailError, setStaEmailError] = useState('Email ko hop le!!!')
-    const [staPasswordError, setStaPasswordError] = useState('Password phai > 5 ki tu!!!')
+    const [staEmailError, setStaEmailError] = useState('email ko hop le!!!')
+    const [staPasswordError, setStaPasswordError] = useState('password phai > 5 ki tu!!!')
     const [staShowPass, setStaShowPass] = useState(false)
     const [staSaveMe, setStaSaveMe] = useState(false)
+    _onLoginFB = () => {
+        LoginManager
+            .logInWithPermissions(['public_profile', 'email'])
+            .then(result => {
+                if (result.isCancelled) {
+                    return Promise.reject(new Error('Ban da cancel login FB!!!'))
+                }
+                console.log(`Login sucess with permissions: ${result.grantedPermissions.toString()}`)
+                return AccessToken.getCurrentAccessToken()
+            })
+            .then(data => {
+                const tmp_credentail = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
+                return firebase.auth().signInWithCredential(tmp_credentail)
+            })
+            .then(currentUser => {
+                alert(`Facebook Login with user : ${JSON.stringify(currentUser)}`)
+            })
+            .catch(err => {
+                alert(`Facebook login fail with error: ${err}`)
+            })
+    }
     function _isEnableSignIn() {
         return staEmailError === '' && staPasswordError === ''
     }
@@ -164,7 +192,7 @@ const SignIn = ({ navigation }) => {
                         borderRadius: SIZES.radius,
                         backgroundColor: COLORS.blue,
                     }}
-                    onPress={() => alert('Dang ky bang Facebook')}
+                    onPress={() => _onLoginFB()}
                 >
                     <Image
                         source={icons.fb}
