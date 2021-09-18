@@ -30,7 +30,7 @@ const CustomDrawerItem = ({ propLabel, propIcon, propIsFocused, propOnPress }) =
 }
 const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedTab, propRouteParam = dummyData?.myProfile?.name }) => {
     async function _onLogout() {
-        const tmp_user = auth().currentUser
+        const tmp_user = auth().currentUser // co the dung cach khac: GoogleSignin.isSignedIn()
         if (tmp_user) {
             await auth().signOut()
                 .catch((err) => {

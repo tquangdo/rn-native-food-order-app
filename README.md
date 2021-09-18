@@ -73,6 +73,8 @@ _onLoginFB = () => {
 ```
 
 ## setting google login for react-native app
+- https://github.com/react-native-google-signin/google-signin
+- https://github.com/react-native-google-signin/google-signin/blob/master/docs/ios-guide.md
 
 ### 1/ xcode
 - `FoodDeliveryLiteApp` > `Info` > `URL Types` > add new (2nd) > URL Schemes: copy paste from `GoogleService-Info.plist>REVERSED_CLIENT_ID`: `com.googleusercontent.apps.XXX`
@@ -87,7 +89,7 @@ _onLoginFB = () => {
 
 ### 2/ firebase
 - firebase dashboard: authentication > sign-in method > google enable
-- remove `Safelist client IDs from external projects (optional)` (different from Expo)
+- remove `Safelist client IDs from external projects (optional)` (different from Expo: must use with IOS client credential)
 - use default for `Web SDK configuration`
 ![gg1](screenshots/gg1.png)
 
