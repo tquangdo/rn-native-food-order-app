@@ -20,7 +20,7 @@
 - `screens/Authentication/SignIn.js`
 ```js
 import firebase from '@react-native-firebase/app';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import FB_CONFIG from './fbaseConfig'
 if (!firebase.apps.length) {
     firebase.initializeApp(FB_CONFIG)
@@ -29,7 +29,7 @@ if (!firebase.apps.length) {
 _onLoginFB = () => {
         .then(data => {
                 const tmp_credentail = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
-                return firebase.auth().signInWithCredential(tmp_credentail)
+                return auth().signInWithCredential(tmp_credentail)
             })
             ...
 }
@@ -70,6 +70,34 @@ _onLoginFB = () => {
             .logInWithPermissions(['public_profile', 'email'])
             ...
 }
+```
+
+## setting google login for react-native app
+
+### 1/ xcode
+- `FoodDeliveryLiteApp` > `Info` > `URL Types` > add new (2nd) > URL Schemes: copy paste from `GoogleService-Info.plist>REVERSED_CLIENT_ID`: `com.googleusercontent.apps.XXX`
+- `AppDelegate.m` file
+```swift
+#import <RNGoogleSignin/RNGoogleSignin.h>
+...
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                 openURL:url
+                                                 options:options] || [RNGoogleSignin application:application openURL:url options:options];
+```
+
+### 2/ firebase
+- firebase dashboard: authentication > sign-in method > google enable
+- remove `Safelist client IDs from external projects (optional)` (different from Expo)
+- use default for `Web SDK configuration`
+![gg1](screenshots/gg1.png)
+
+### 3/ src code: 
+- `screens/Authentication/fbaseConfig.js: WEB_CLIENT_ID=XXX..apps.googleusercontent.com`: copy paste from `GoogleService-Info.plist>CLIENT_ID`
+- `screens/Authentication/SignIn.js`
+```js
+import { GoogleSignin } from '@react-native-community/google-signin'
+...
+async function _onLoginGG() {...}
 ```
 
 ## run local

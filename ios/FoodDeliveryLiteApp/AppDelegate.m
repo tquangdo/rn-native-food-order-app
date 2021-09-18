@@ -15,6 +15,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import <RNGoogleSignin/RNGoogleSignin.h>
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -64,7 +65,7 @@ static void InitializeFlipper(UIApplication *application) {
 {
   [[FBSDKApplicationDelegate sharedInstance] application:application
                                                  openURL:url
-                                                 options:options];
+                                                 options:options] || [RNGoogleSignin application:application openURL:url options:options];
   return YES;
 }
 

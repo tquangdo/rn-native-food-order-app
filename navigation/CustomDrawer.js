@@ -6,6 +6,7 @@ import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigatio
 import { MainLayout } from '../screens';
 import { connect } from 'react-redux'
 import { setSelectedTab } from '../stores/tab/tabActions';
+import { auth } from '../screens/Authentication/fbaseConfig'
 
 const Drawer = createDrawerNavigator()
 const { width } = Dimensions.get('screen')
@@ -28,6 +29,16 @@ const CustomDrawerItem = ({ propLabel, propIcon, propIsFocused, propOnPress }) =
     )
 }
 const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedTab, propRouteParam = dummyData?.myProfile?.name }) => {
+    async function _onLogout() {
+        const tmp_user = auth().currentUser
+        if (tmp_user) {
+            await auth().signOut()
+                .catch((err) => {
+                    alert('Logout ERR!!!: ' + err.message);
+                })
+        }
+        propNavigation.navigate("SignIn")
+    }
     return (
         <DrawerContentScrollView
             scrollEnabled={true}
@@ -114,9 +125,7 @@ const CustomDrawerContent = ({ propNavigation, propSelectedTab, propSetSelectedT
                 <CustomDrawerItem
                     propLabel='Dang xuat'
                     propIcon={icons.logout}
-                    propOnPress={() => {
-                        propNavigation.navigate("SignIn")
-                    }}
+                    propOnPress={() => _onLogout()}
                 />
             </View>
         </DrawerContentScrollView>
