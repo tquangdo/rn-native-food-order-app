@@ -11,10 +11,10 @@
 ## setting firebase for react-native app
 
 ### 1/ firebase console
-- create 1 project & 1 ios app + 1 web app
+- create 1 project & 1 ios app + 1 web app (actually, NO need 1 web app!!!)
 - with ios app: download `GoogleService-Info.plist` & add to xcode
 ![firebase1](screenshots/firebase1.png)
-- with web app: copy configure code & paste to `screens/Authentication/fbaseConfig.js`
+- ~with web app: copy configure code & paste to `screens/Authentication/fbaseConfig.js`~
 
 ### 2/ src code: 
 - `screens/Authentication/SignIn.js`
