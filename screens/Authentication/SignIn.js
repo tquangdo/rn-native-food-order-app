@@ -47,8 +47,8 @@ const SignIn = ({ navigation }) => {
                 alert(`Google login fail with error: ${err}`)
             })
     }
-    _onLoginFB = () => {
-        LoginManager
+    async function _onLoginFB() {
+        await LoginManager
             .logInWithPermissions(['public_profile', 'email'])
             .then(result => {
                 if (result.isCancelled) {
